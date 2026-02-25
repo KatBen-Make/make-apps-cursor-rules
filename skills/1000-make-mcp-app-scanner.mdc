@@ -1,0 +1,30 @@
+---
+name: Make MCP App Scanner
+type: skill
+description: Scan Make custom apps and extract structured component data
+---
+
+When scanning a Make custom app via MCP:
+
+1. Identify all:
+   - Modules
+   - Connections
+   - RPCs
+   - Functions
+
+2. For each component:
+   - Extract name
+   - Extract label
+   - Identify component type
+   - Search entire code for:
+       - url fields
+       - API endpoint definitions
+       - HTTP request calls
+   - Collect all URLs used
+
+3. If multiple URLs exist:
+   - Return as array of URLs.
+
+4. Ensure no component is skipped.
+
+5. Output structured JSON internally for further formatting.
