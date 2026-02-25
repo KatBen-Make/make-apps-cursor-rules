@@ -42,38 +42,30 @@ Persistent constraints applied to projects.
 
 Examples:
 - Testing conventions
-- Assertion standards
-- SDK architecture rules
+
 
 ### skills/
 Reusable capabilities invoked internally by commands.
 
 Examples:
 - Make MCP App Scanner
-- Test Strength Analyzer
-- Endpoint Extractor
 
 ### commands/
 User-triggered workflows.
 
 Examples:
-- /generate-unit-test
-- /export-make-app-components
-- /review-tests
+- /generate-unit-test (add code.js with function and its test.js files)
+- /export-make-app-components pipedrive (you need to specify the apps name (not label))
+
 
 ---
 
 ## 🔌 How to Use in Cursor
 
-1. Open Cursor
-2. Go to:
-   Settings → Rules for AI → Project Rules
-3. Click:
-   Add Rule → Remote Rule (GitHub)
-4. Paste this repository URL
-5. Enable it
+Currently the rules, skills and commands must be copy & pasted manually from gitHub files to local Cursor settings.
+See https://make.atlassian.net/wiki/x/NQFqpQ
 
-The rules and commands will sync automatically.
+In the future they will be part of Team settings.
 
 ---
 
@@ -150,13 +142,6 @@ Open a Pull Request or contact the maintainers.
 ---
 
 ## 🚀 Future Expansion
-
-Planned enhancements may include:
-
-- Automated rule testing
-- Multi-app analysis tooling
-- AI mutation-style test strengthening
-- API duplication detection across apps
 
 ---
 
