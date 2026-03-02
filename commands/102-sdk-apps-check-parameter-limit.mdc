@@ -1,17 +1,18 @@
 ---
 name: sdk-apps-check-parameter-limit
 type: command
-description: Validate that all Search, List, and Watch modules contain a proper Limit parameter with correct UX help message.
+description: Validate that all Search, List, and Watch modules contain a proper Limit parameter with correct UX help message. Fix the problems if prompted by user.
 ---
 
 You must ask the user for the Make custom app name if it is not provided.
 
 Target app: {{app_name}}
 
-Use the Make API MCP server to locate the custom app with exact name: {{app_name}}.
+Arguments:
+- appName (required) – name of the custom app to check
+- fixPrompt (optional) – instructions describing how to fix found issues
 
-Do NOT modify anything in the app.
-This command is strictly read-only.
+Use the Make API MCP server to locate the custom app with exact name: {{app_name}}.
 
 Steps:
 
@@ -27,6 +28,21 @@ Steps:
 
 4. Collect only modules that fail any of the above checks.
 
-Output requirements:
+5. If fixPrompt IS NOT provided:
+	- Do NOT modify anything in the app.
+	- This command is strictly read-only.
+	- Output a list of modules with errors.
 
-Result should be a list of modules with errors.
+6. If fixPrompt IS provided:
+      - Apply fixes according to fixPrompt.
+      - Follow Make Apps SDK best practices.
+      - Do not modify unrelated parameters.
+      - After applying changes:
+            • Output summary of changes made.
+            • List modules updated.
+            • Confirm completion.
+
+	Safety:
+		- Never modify modules not listed above.
+		- Never change functionality unrelated to the Limit parameter.
+		- If uncertain, report instead of guessing.
