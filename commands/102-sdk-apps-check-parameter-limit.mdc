@@ -22,18 +22,20 @@ Steps:
    - List
    - Watch
 
-3. Use the Make API MCP server code and UX guidelines to check for each module:
-   - Check if a parameter named exactly `limit` (case-insensitive) exists among mappable parameters.
-   - Verify the parameter has correct settings and the help message follows UX guidelines for Limit parameters.
+3. If the filtered modules are using RPCs, check the RPCs and functions
 
-4. Collect only modules that fail any of the above checks.
+4. Use the Make API MCP server code and UX guidelines to check for each module (or connected RPC and function):
+   - Check if a parameter named exactly `limit` (case-sensitive) exists among mappable parameters.
+   - Verify the parameter has correct settings and the help message following the code best practices and UX guidelines for Limit parameters.
 
-5. If fixPrompt IS NOT provided:
+5. Collect only modules (or connected RPC and function) that fail any of the above checks.
+
+6. If fixPrompt IS NOT provided:
 	- Do NOT modify anything in the app.
 	- This command is strictly read-only.
-	- Output a list of modules with errors.
+	- Output a list of modules (or connected RPC and function) with errors.
 
-6. If fixPrompt IS provided:
+7. If fixPrompt IS provided:
       - Apply fixes according to fixPrompt.
       - Follow Make Apps SDK best practices.
       - Do not modify unrelated parameters.
@@ -43,6 +45,6 @@ Steps:
             • Confirm completion.
 
 	Safety:
-		- Never modify modules not listed above.
+		- Never modify modules (or connected RPC and function) not listed above.
 		- Never change functionality unrelated to the Limit parameter.
 		- If uncertain, report instead of guessing.
