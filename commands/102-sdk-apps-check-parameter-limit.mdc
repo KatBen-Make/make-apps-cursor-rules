@@ -1,0 +1,32 @@
+---
+name: sdk-apps-check-parameter-limit
+type: command
+description: Validate that all Search, List, and Watch modules contain a proper Limit parameter with correct UX help message.
+---
+
+You must ask the user for the Make custom app name if it is not provided.
+
+Target app: {{app_name}}
+
+Use the Make API MCP server to locate the custom app with exact name: {{app_name}}.
+
+Do NOT modify anything in the app.
+This command is strictly read-only.
+
+Steps:
+
+1. Load all modules of the app.
+2. Filter only modules of type:
+   - Search
+   - List
+   - Watch
+
+3. Use the Make API MCP server code and UX guidelines to check for each module:
+   - Check if a parameter named exactly `limit` (case-insensitive) exists among mappable parameters.
+   - Verify the parameter has correct settings and the help message follows UX guidelines for Limit parameters.
+
+4. Collect only modules that fail any of the above checks.
+
+Output requirements:
+
+Result should be a list of modules with errors.
