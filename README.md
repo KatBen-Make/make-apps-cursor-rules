@@ -41,21 +41,22 @@ This is AI governance, not general tooling.
 Persistent constraints applied to projects.
 
 Examples:
-- Testing conventions
+- apps-unit-tests for SDK apps unit test conventions
 
 
 ### skills/
 Reusable capabilities invoked internally by commands.
 
 Examples:
-- Make MCP App Scanner
+- Make MCP App Scanner - scans the app and creates a CSV file with all components (modules, rpcs...) which can be then imported to googlesheet. Usefull fo big API updates.
 
 ### commands/
 User-triggered workflows.
 
 Examples:
-- /generate-unit-test (add code.js with function and its test.js files)
+- /generate-unit-test (add the code.js with function and its test.js files to the prompt window)
 - /export-make-app-components pipedrive (you need to specify the apps name (not label))
+- /sdk-apps-check-parameter-limit pipedrive fix the errors (you need to provide app name. If you want the errors fixed, you need to prompt the AI to do it, otherwise it will only check the modules and outputs the list of errors)
 
 
 ---
