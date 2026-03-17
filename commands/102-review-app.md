@@ -27,4 +27,4 @@ Performs a comprehensive review of the specified Make custom app by:
 
 ## Instructions
 
-Follow the `make-app-reviewer` skill. Read the skill file at `~/.cursor/skills/make-app-reviewer/SKILL.md` and execute the full review workflow described there, using the app name and case type provided by the developer.
+Follow the `app-reviewer` skill. Read the skill file at `~/.cursor/skills/app-reviewer/SKILL.md` and execute the full review workflow described there, using the app name and case type provided by the developer.

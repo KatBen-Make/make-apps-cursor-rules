@@ -1,9 +1,9 @@
 ---
-name: make-app-reviewer
+name: app-reviewer
 description: Review a Make custom app against coding practices and UX guidelines. Checks spelling, casing, labels, hints, error messages, ID finders, unit tests, and all components. Use when the user asks to review, audit, lint, or check a Make custom app for quality, compliance, or best practices.
 ---
 
-# Make Custom App Reviewer
+# Custom App Reviewer
 
 Review a Make custom app through the `user-Make All` MCP server and the `user-Atlassian` MCP server, checking all components against coding practices and UX guidelines.
 
@@ -250,7 +250,7 @@ Using the app's API documentation (fetched in Step 0):
 Present the report as markdown with this structure:
 
 ```
-# Make App Review: {appName}
+# App Review: {appName}
 
 ## Summary
 - **Components scanned**: X modules, Y connections, Z RPCs, W functions, V webhooks

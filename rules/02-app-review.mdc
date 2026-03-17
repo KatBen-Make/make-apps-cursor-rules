@@ -3,7 +3,7 @@ description: Standards for reviewing Make custom apps against coding practices a
 alwaysApply: true
 ---
 
-# Make Custom App Review Standards
+# Custom App Review Standards
 
 When reviewing or auditing a Make custom app, follow these standards.
 
