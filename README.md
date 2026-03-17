@@ -1,6 +1,6 @@
 # SDK Apps – Cursor AI Standards
 
-This repository contains the official Cursor AI configuration for SDK Apps development.
+This repository contains Cursor AI configuration for SDK Apps development.
 
 It includes:
 
@@ -40,33 +40,35 @@ This is AI governance, not general tooling.
 ### rules/
 Persistent constraints applied to projects.
 
-Examples:
-- apps-unit-tests for SDK apps unit test conventions
-
-
 ### skills/
 Reusable capabilities invoked internally by commands.
 
-Examples:
-- Make MCP App Scanner - scans the app and creates a CSV file with all components (modules, rpcs...) which can be then imported to google sheet. Usefull for big API updates.
 
 ### commands/
 User-triggered workflows.
-
-Examples:
-- `/generate-unit-test`  - add the code.js with function and its test.js files to the prompt window
-- `/export-make-app-components pipedrive` - you need to specify the apps name (not label)
-- `/sdk-apps-check-parameter-limit pipedrive fix the errors` - you need to provide app name. If you want the errors fixed, you need to prompt the AI to do it, otherwise it will only check the modules and outputs the list of errors.
-
 
 ---
 
 ## 🔌 How to Use in Cursor
 
-Currently the rules, skills and commands must be copy & pasted manually from gitHub files to local Cursor settings.
+Currently the rules, skills and commands must be copy & pasted manually from gitHub files to local Cursor settings if you want to use them with Make App Editor plugin directly on the files in Temp.
 See https://make.atlassian.net/wiki/x/NQFqpQ
 
-In the future they will be part of Team settings.
+### Generate Unit test
+- It will check current unit test, improve them and add new tests
+- uses Rule `01-apps-unit-tests.mdc` and command `/generate-unit-test` 
+- Add the code.js with function and its test.js files to the prompt window and type `/generate-unit-test`
+
+
+### Export app's components
+- It will export all components and their endpoints to csv that can be imported to googlesheet - usefull for API updates
+- uses Skill `make-mcp-app-scanner` and command `/export-make-app-components` 
+- you need to specify the apps name (not label) for example, `/export-make-app-components pipedrive` 
+
+### Review an app
+- reviews the app for code best practice and UX Guidines. Uses Make MCP server and Atlasian MCP server (you need to connect them manually and update the `app-reviewer` skill with the names you are using for the MCP servers). Outputs a summary of errors and suggestions.
+- uses skill `app-reviewer` and command `review-app`
+- you need to specify the app's name and title case / sentence case, for example `/review-app simplybook title case`
 
 ---
 
