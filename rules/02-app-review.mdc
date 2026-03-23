@@ -25,9 +25,9 @@ When reviewing or auditing a Make custom app, follow these standards.
 
 1. **Spelling**: US English for all user-facing text (labels, hints, banners, errors).
 2. **Casing**: Consistent Title Case or Sentence case per developer choice.
-3. **UX guidelines**: Module naming (BP-011), descriptions (BP-001), hints (BP-002), messages (BP-015), array labeling (BP-016), ID finder (BP-017), field types (BP-004), date inputs (BP-018), error handling (BP-022), pagination (BP-009).
+3. **UX guidelines**: Module naming (BP-011), descriptions (BP-001), hints (BP-002), messages (BP-015), array labeling (BP-016), ID finder (BP-017), field types (BP-004), date inputs (BP-018: date-only fields use type `"text"` with `help` for expected format e.g. `YYYY-MM-DD`), error handling (BP-022), pagination (BP-009).
 4. **Coding practices**: Base config, communication, parameters, IML syntax, log sanitization.
-5. **Unit tests**: Every custom function must have tests.
+5. **Unit tests**: Every custom function must have tests. Tests must follow quality standards: only `it()` blocks, `assert.strictEqual()` for primitives, `assert.deepStrictEqual()` for objects/arrays, no `assert.ok()`, descriptive messages when multiple assertions per test, strong deterministic assertions.
 6. **ID finders**: Cross-reference API docs — any entity ID parameter with a corresponding list/search endpoint needs an ID finder RPC.
 
 ## Severity Levels

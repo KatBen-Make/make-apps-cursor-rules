@@ -159,7 +159,9 @@ Check against loaded UX best practices (from Step 0). Key checks:
 - Add button: "Add [singular item]"
 
 **Date inputs (BP-018):**
-- Use "date" type, not "text" for date fields (unless only date or only time)
+- Use "date" type for full date+time fields
+- Date-only fields (no time component) must use type `"text"` with a `help` explaining the expected format (e.g., `YYYY-MM-DD`)
+- Time-only fields must use type `"text"` with a `help` explaining the expected format (e.g., `HH:mm`)
 
 **ID field naming (BP-013):**
 - Map toggle ON → include "ID" in label
@@ -228,7 +230,18 @@ Check against loaded UX best practices (from Step 0). Key checks:
 For every custom function:
 - Check if test code exists (via `custom_apps_functions_get_test`)
 - If no test exists → flag as **error**
-- If test exists → verify it is non-empty
+- If test exists → verify it is non-empty and passes the quality checks below
+
+**Unit test quality checks:**
+- Tests use only `it()` blocks — no `describe()`, no imports, no comments
+- Assertions use Node `assert` library only
+- Primitive comparisons use `assert.strictEqual()`
+- Object/array comparisons use `assert.deepStrictEqual()`
+- Never `assert.ok()`, never non-strict assertions, never loose equality
+- Simple cases: inline assertion with exact value (e.g., `assert.strictEqual(fn(null), undefined)`)
+- Complex cases: define `const input` and `const output`, then `assert.deepStrictEqual(fn(input), output)` — output must be fully defined and deterministic
+- When an `it()` block has multiple assertions, every assertion must include a descriptive message string
+- Assertions must be strong enough to fail on incorrect implementations — no vague boolean or truthy/falsey checks
 
 ### Check 6: ID Finder Usage
 
