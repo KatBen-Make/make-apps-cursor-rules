@@ -66,7 +66,8 @@ See https://make.atlassian.net/wiki/x/NQFqpQ
 - you need to specify the apps name (not label) for example, `/export-make-app-components pipedrive` 
 
 ### Review an app
-- reviews the app for code best practice and UX Guidines. Uses Make MCP server and Atlasian MCP server (you need to connect them manually and update the `app-reviewer` skill with the names you are using for the MCP servers). Outputs a summary of errors and suggestions.
+- reviews the app for code best practice and UX Guidines. Uses Make MCP server and Atlasian MCP server (you need to connect them manually and update the `app-reviewer` skill with the names you are using for the MCP servers). On top of that there is a rule for unit tests and handling mappable parameter for dates without time.
+Outputs a summary of errors, suggestions, and OKs.
 - uses skill `app-reviewer` and command `review-app`
 - you need to specify the app's name and title case / sentence case, for example `/review-app simplybook title case`
 
