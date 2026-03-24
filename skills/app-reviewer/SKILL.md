@@ -277,18 +277,18 @@ Present the report as markdown with this structure:
 ### {moduleLabel} (`{moduleName}`) — {typeName}
 
 #### Errors
-- [SPELL] Label "Organsiation" should be "Organization"
-- [CASE] Label "Create New Item" should be "Create new item" (Sentence case)
-- [UX:BP-011] Module name should start with a verb
-- [CODE] Missing log sanitization for authorization header
-- [ID-FINDER] Parameter `projectId` should have an ID finder — API has GET /projects endpoint
+- **[mappable_parameters]** [SPELL] Label "Organsiation" should be "Organization"
+- **[mappable_parameters]** [CASE] Label "Create New Item" should be "Create new item" (Sentence case)
+- **[module]** [UX:BP-011] Module name should start with a verb
+- **[communication]** [CODE] Missing log sanitization for authorization header
+- **[mappable_parameters]** [ID-FINDER] Parameter `projectId` should have an ID finder — API has GET /projects endpoint
 
 #### Warnings
-- [UX:BP-002] Parameter "status" has no hint
-- [UX:BP-004] Limit field is not last
+- **[mappable_parameters]** [UX:BP-002] Parameter "status" has no hint
+- **[mappable_parameters]** [UX:BP-004] Limit field is not last
 
 #### OK
-- Error handling correctly maps 429 to RateLimitError
+- **[communication]** Error handling correctly maps 429 to RateLimitError
 
 ---
 
@@ -297,7 +297,8 @@ Present the report as markdown with this structure:
 ### {connectionLabel} (`{connectionName}`)
 
 #### Errors
-- ...
+- **[parameters]** [UX:BP-002] Parameter "API Key" has no hint
+- **[api]** [CODE] Missing error handling for 429
 
 ---
 
@@ -306,7 +307,7 @@ Present the report as markdown with this structure:
 ### {rpcLabel} (`{rpcName}`)
 
 #### Errors
-- ...
+- **[parameters]** ...
 
 ---
 
@@ -324,7 +325,7 @@ Present the report as markdown with this structure:
 ### {webhookLabel} (`{webhookName}`)
 
 #### Errors
-- ...
+- **[parameters]** ...
 ```
 
 ## Severity Definitions
@@ -341,3 +342,4 @@ Present the report as markdown with this structure:
 - Reference specific best practice IDs (BP-XXX) in findings.
 - Cross-reference API documentation when checking ID finder coverage.
 - For each component, run ALL check categories — don't stop after finding the first issue.
+- Every finding for modules, connections, RPCs, and webhooks must be prefixed with the **block** it belongs to: `[module]`, `[communication]`, `[mappable_parameters]`, `[static_parameters]`, `[interface]`, `[samples]`, `[api]`, `[parameters]`, `[attach]`, `[detach]`. Use `[module]` or `[connection]` for top-level metadata (label, description). Functions and their tests do not need a block prefix.

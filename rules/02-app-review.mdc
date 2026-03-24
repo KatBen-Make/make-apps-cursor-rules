@@ -39,3 +39,5 @@ When reviewing or auditing a Make custom app, follow these standards.
 ## Output
 
 Tag findings with category codes: `[SPELL]`, `[CASE]`, `[UX:BP-XXX]`, `[CODE]`, `[TEST]`, `[ID-FINDER]`.
+
+Every finding for modules, connections, RPCs, and webhooks must also include the **block** it belongs to (e.g., `[communication]`, `[mappable_parameters]`, `[static_parameters]`, `[interface]`, `[parameters]`, `[api]`). Use `[module]` or `[connection]` for top-level metadata (label, description). Example: `**[communication]** [CODE] Missing log sanitization`.
