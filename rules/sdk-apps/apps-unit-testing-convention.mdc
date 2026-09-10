@@ -1,0 +1,72 @@
+---
+name: Apps Unit Testing Convention
+type: rule
+scope: project
+---
+
+# Apps Unit Testing Standard
+
+When generating unit tests for applications:
+
+## Output Restrictions
+
+- Return ONLY `it()` blocks.
+- Do NOT include `describe()`.
+- Do NOT include imports.
+- Do NOT include explanations.
+- Do NOT include comments.
+- Do NOT wrap output in markdown code blocks.
+- Both testing libraries are already imported.
+
+## Structure Requirements
+
+- Always use `it()` blocks.
+- Use Node `assert` library only.
+- Use `assert.strictEqual()` for primitive comparisons.
+- Use `assert.deepStrictEqual()` for objects and arrays.
+- Never use `assert.ok()`.
+- Never use non-strict assertions.
+- Never use loose equality checks.
+
+## Simple Test Case Pattern
+
+For simple cases, use inline assertions:
+
+assert.strictEqual(parseMessage(null), undefined)
+
+Avoid vague boolean checks such as:
+
+assert.strictEqual(result, true)
+
+Instead assert exact returned structure or value.
+
+## Complex Test Case Pattern
+
+For complex inputs or outputs:
+
+- Define `const input`
+- Define `const output`
+- Use:
+
+const input = ...
+const output = ...
+assert.deepStrictEqual(fn(input), output)
+
+The expected output must be fully defined and deterministic.
+
+## Multiple Assertions in One Test
+
+If more than one assertion exists inside a single `it()` block:
+
+- Every assertion MUST include a descriptive message.
+
+Example:
+
+assert.strictEqual(parseMessage(null), undefined, 'Input is null')
+
+## Assertion Strength Rules
+
+- Assertions must fail if implementation is incorrect.
+- Avoid vague checks that could pass multiple wrong implementations.
+- Prefer checking exact values and full object structures.
+- Prefer deterministic comparisons over truthy/falsey checks.

@@ -1,0 +1,47 @@
+---
+description: Back up Make app files to a local backup folder before editing them (poor-man's versioning for files with no git history).
+alwaysApply: true
+---
+
+# Backup Make App Files Before Editing
+
+Make app files often have no git history (edited directly on the server via MCP, or
+in a temp local clone). Before the FIRST modification of such a file in a session,
+save a copy to the backup folder so changes are recoverable.
+
+Backup root: `C:\Users\kacab\Documents\.cursor\backupFilesAI` (local-only, not synced).
+
+## When this applies
+
+Applies to Make app files: `*.iml.json`, `makecomapp.json`, component code
+(connections, webhooks, modules, rpcs, functions), `*.imljson`, and any JSON/JS
+code file belonging to a Make custom (SDK) app — whether local or fetched from the server.
+
+## Never back up secrets
+
+Do NOT copy `**/.secrets/**`, `*apikey*`, or any file referenced by `apikeyFile`.
+
+## How to back up
+
+1. **Local file edits:** before the first edit, copy the current on-disk file into the
+   backup root, mirroring its path and adding a UTC timestamp before the extension:
+   - Source: `<workspace>\connections\myConn\base.iml.json`
+   - Backup: `C:\Users\kacab\Documents\.cursor\backupFilesAI\connections\myConn\base.20260625-193000.iml.json`
+
+   ```powershell
+   $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
+   $dest = "C:\Users\kacab\Documents\.cursor\backupFilesAI\<relative\path>\<name>.$ts.<ext>"
+   New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+   Copy-Item "<sourceFile>" $dest
+   ```
+
+2. **Make SERVER edits (via MCP):** there is no local file yet. First FETCH the current
+   server version of the component/code via the Make MCP server, write that content to the
+   backup root (mirror app name + component + code type + timestamp), THEN apply the change.
+
+## Rules
+
+- Timestamp every backup so repeated edits never overwrite an earlier backup.
+- Back up the ORIGINAL content (before your change), once per file per session.
+- Preserve original formatting in the backup — never minify.
+- Mention briefly that a backup was made and where.

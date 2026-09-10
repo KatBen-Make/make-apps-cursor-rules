@@ -1,0 +1,41 @@
+---
+description: Default model split for Make SDK app code vs. vendor API documentation investigations
+alwaysApply: true
+---
+
+# Model Split for App-Code-vs-API-Doc Investigations
+
+When investigating Make custom (SDK) app code against vendor/API documentation
+(e.g. checking whether a module/RPC/function correctly reflects the vendor's
+API — required fields, endpoints, schemas, deprecations, etc.), default to this
+split for price/performance:
+
+## Orchestrator (main thread — Claude Sonnet 5 thinking-high)
+
+- Plans the investigation.
+- Reads/fetches Make app code directly via MCP (`custom-apps_*`, `rpc_execute`, etc.).
+- Performs the actual comparison/judgment between code and documentation.
+- Writes the final verified conclusion with citations.
+- Never blindly trusts a subagent's claim for anything load-bearing to the
+  conclusion — re-verifies against what it can see directly when it matters.
+
+## Subagents (`gpt-5.6-sol-medium`) for narrow, cheap legwork
+
+Delegate to a `Task` subagent with `model: "gpt-5.6-sol-medium"` for steps that
+are I/O-heavy but low-reasoning, e.g.:
+
+- Fetching/summarizing a vendor's API reference page for a specific endpoint
+  or object type.
+- Listing all RPCs/functions/modules in an app before diving into specifics.
+- Pulling raw code for a specific function via MCP and returning it verbatim.
+- A first-pass diff between two versions of a module.
+
+## Notes
+
+- This is the default; don't ask before spinning up a Sol subagent for this
+  kind of legwork on these tasks.
+- If a task turns out to need more rigor than expected (ambiguous vendor docs,
+  conflicting sources, high-stakes conclusion), pull that step back into the
+  Sonnet orchestrator instead of trusting the Sol subagent's output as-is.
+- This split applies specifically to Make SDK app code vs. API documentation
+  investigations — not a general rule for all subagent delegation.

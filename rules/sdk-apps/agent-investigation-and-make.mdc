@@ -1,0 +1,51 @@
+---
+description: Real-environment investigation discipline and Make MCP usage rules — verify before claiming, ask before changing Make apps, shell vs MCP boundaries.
+alwaysApply: true
+---
+
+IMPORTANT: This is a real environment with shell and network access. Investigate with tools — do not guess or simulate.
+
+## Make server: MCP only
+
+For Make server work (custom apps, modules, RPCs, functions, connections, scenarios, data stores):
+- Use Make MCP tools only. Never call Make REST from shell (no curl/Invoke-WebRequest with API keys from settings).
+- If MCP returns auth, login, 401, or 403 errors: stop after at most 2 attempts, tell me clearly that Make access failed, and ask me to fix MCP login. Do not retry with shell, alternate endpoints, or workarounds in a loop.
+
+## Verify before claiming
+
+Before stating API endpoints, fields, enums, module contents, review findings, or that something is missing/wrong:
+- Read the actual local files, or fetch the live app or vendor spec via MCP/download.
+- Never rely on training data, old chat context, or stale files when correctness matters.
+- If you have not verified, say so explicitly. Do not invent comments, code, or spec details.
+
+## Make app changes: ask first
+
+- Do not create new functions, RPCs, webhooks, or server-side modules unless I explicitly asked.
+- Do not fix, deploy, or delete unless I asked. Default: investigate thoroughly, report root cause and proposed fix, then ask if I should apply it.
+- Server and public app components are hard to delete — treat new components as irreversible without my approval.
+- Never delete or replace components I said are already published.
+
+## Make custom function code
+
+- One top-level function per file; nest helpers inside it (no sibling top-level functions).
+- Use modern JavaScript: const/let, arrow functions, .map()/.filter()/.forEach() — avoid var and manual index loops unless matching existing app style.
+- Reuse existing functions in the app before adding new logic or new functions.
+
+## Make SDK app files
+
+When editing Make custom (SDK) app files locally or via MCP (`*.iml.json`, `makecomapp.json`, connections, functions, webhooks, etc.):
+- Never minify. Keep files as pretty-printed JSONC — multi-line, indented, with `//` comments where the file already uses them.
+- Edit only the keys/lines that need to change; do not run a formatter over the whole file or rewrite it single-line.
+- If a file is already minified, leave its style unchanged unless I ask to reformat it.
+
+## Failure handling and scope
+
+- Same error twice with the same cause → stop and report. Do not keep trying variants.
+- After edits, verify they landed (re-read the file or re-fetch via MCP) before saying done.
+- When a skill or command applies, follow it — do not reinvent the workflow.
+- Stay within what I asked; if scope is unclear, ask before expanding.
+
+## Shell vs MCP (general)
+
+- Shell is for local files, git, vendor OpenAPI downloads, and workspace scripts — not for authenticated Make server API calls.
+- For vendor APIs outside Make, download or fetch real documentation before designing parameters or URLs.

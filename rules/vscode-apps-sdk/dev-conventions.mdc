@@ -1,0 +1,99 @@
+---
+description: Lessons learned from GitHub PR review comments (Copilot, KUSTIKs, ma-zal, dominikkadera) on this project. Apply when writing or reviewing TypeScript changes in this repo.
+alwaysApply: true
+---
+
+# Dev Conventions (from PR review history)
+
+Distilled from review comments on PR #361 (per-app component search), #362 (endpoints),
+and #366 (remove legacy Integromat support) in integromat/vscode-apps-sdk.
+
+## Rebuilding tree nodes for reveal
+
+When reconstructing `Group`/`Item`/`App` nodes outside the normal lazy `getChildren()` path
+(e.g. to call `TreeView.reveal()` from a search/hover/command flow), match what
+`AppsProvider.getChildren()` would have produced, not a simplified stand-in:
+
+- **ID contract**: the node `id` must exactly match what `getChildren()` builds (e.g. group
+  `id` stays the plural key like `"modules"`/`"rpcs"` — that's what `reveal`/`getParent` match on).
+- **Humanized labels**: the *label* shown to the user must be humanized the same way
+  (`"modules"` -> `"Modules"`, `"rpcs"` -> `"Remote procedures"`), even though the `id` stays
+  the raw plural key. Keep a small `GROUP_LABELS`-style map next to the rebuild helper instead
+  of re-deriving it ad hoc.
+- **`changes` markers**: don't rebuild nodes with `changes: []`. Filter the real
+  `appNode.changes` down to the group/item in question (mirroring `getChildren()`'s filter,
+  including the `account` -> `connection` and `hook` -> `webhook` normalization, and excluding
+  the synthetic `groups` change) so the rebuilt node still shows the "changed" indicator.
+- **Prefer the live node when cheap**: if a live tree node (e.g. the actual `App` object from
+  `getChildren()`) is available, use it instead of a synthetic stand-in — synthetic nodes only
+  need `id`/`name`/`version`/`parent: undefined`/`changes: []` to satisfy `Core.getApp()` and
+  `isVersionable()`, but a live node participates more reliably in whatever `TreeView.reveal()`
+  and `getParent()` are doing to expand the tree.
+- **Don't narrow polymorphic fields**: e.g. a component "type" can be a numeric type id
+  (modules) *or* a string like `'oauth'` (connections) — type it as `number | string`, not just
+  `number`, or the annotation silently misleads future callers even though the value is passed
+  through correctly at runtime.
+
+## Logging around Core API helpers
+
+`Core.rpGet()` already calls `showAndLogError()` (logs at `error` level + shows a dialog)
+before throwing. If you also log in a `catch` around `rpGet`, downgrade to `warn`/`debug` —
+otherwise every failure gets logged twice. Guard against non-`Error` throws:
+
+```typescript
+} catch (err: unknown) {
+	const message = err instanceof Error ? err.message : String(err);
+	log('warn', `Some operation failed: ${message}`);
+}
+```
+
+Isolate per-item/per-group failures (e.g. fetching 5 component types in parallel) so one
+bad/disabled endpoint doesn't fail the whole operation — return an empty result for that
+slice and let the caller decide whether an empty result means "genuinely nothing" or
+"something failed" (track a `failed` flag rather than conflating the two).
+
+## Comments & JSDoc must match behavior
+
+Reviewers (mostly Copilot) repeatedly flagged comments/JSDoc that describe a narrower behavior
+than the code actually has — e.g. a "fallback applies to functions only" comment on logic that
+actually applies the fallback to every component type. When you generalize or simplify logic,
+re-read every comment touching it and reword rather than leave a stale, type-specific
+explanation. This matters most for exported/public JSDoc, since it's the contract future
+callers read instead of the implementation.
+
+## Reduce `any` — prefer specific interfaces
+
+For raw API responses / cross-boundary data, define a small interface (e.g. `RawApiComponent`)
+instead of `any`, even if it's not the full official response shape. Use `unknown` (not `any`)
+for genuinely-unknown inputs and caught errors, and narrow with `instanceof`/type guards at the
+point of use. Constructors on plain-JS classes (`allowJs: true`) usually don't need an
+`as any` cast — TypeScript can infer them from the `.js` source.
+
+## New v2-only commands need an env guard
+
+Endpoints (and other v2-only features) need an explicit `envGuard(_environment, [2])` (or
+equivalent) check in command handlers that could be invoked outside their intended context
+(e.g. via the command palette) — otherwise invoking them against a v1 environment produces a
+confusing API error instead of a clear "not supported" message. Check for this pattern whenever
+adding a command tied to a specific API version.
+
+## Cache correctness for hover/lookup providers
+
+If you memoize an in-flight or completed async fetch (e.g. per `appName@version`):
+
+- **Don't cache a rejected promise** — `.catch()` should evict the cache entry so the next
+  call retries instead of replaying the same failure indefinitely.
+- **Gate expensive filesystem walks** (e.g. searching upward for a manifest file like
+  `makecomapp.json`) with a directory -> result cache (including negative/`null` results) so
+  hovering over unrelated files in a large workspace doesn't repeat the walk every time.
+- Give network caches a short TTL (e.g. 30s) rather than caching forever, since the underlying
+  data (component lists, etc.) can change during a session.
+
+## ESLint/lint reminders
+
+- Missing semicolons violate `@stylistic/semi: [2, "always"]` (see `eslint.config.mjs`) and
+  will fail linting — don't mimic pre-existing semicolon-less `.js` files when writing `.ts`.
+- `require()`-style imports (`import Foo = require('./Foo')`) are technically disallowed by
+  `@typescript-eslint/no-require-imports`, but this is a large *pre-existing* violation across
+  older files (e.g. `extension.ts`'s command-module imports) — don't try to "fix" it inside an
+  unrelated PR; it inflates the diff and isn't what's being reviewed.
