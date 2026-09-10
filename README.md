@@ -44,10 +44,32 @@ commands/
 Client- or app-specific skills (e.g. anything scoped to a single customer's
 app family) are **not** kept here — they live alongside that project instead.
 
+## Where each file actually lives in Cursor
+
+Files in this repo are **portable copies**. Where the original actually lives
+in Cursor differs per item — this matters because User Rules aren't files you
+can drop into a folder:
+
+| Repo file | Cursor location | How to re-apply |
+|---|---|---|
+| `rules/sdk-apps/backup-make-app-files.mdc` | **User Rule** (Cursor Settings → Rules) | Paste body into Settings → Rules → add rule |
+| `rules/sdk-apps/agent-investigation-and-make.mdc` | **User Rule** — titled *"Always apply this rule"* in Settings | Paste body into Settings → Rules → add rule |
+| `rules/sdk-apps/apps-unit-testing-convention.mdc` | **User Rule** | Paste body into Settings → Rules → add rule |
+| `rules/sdk-apps/ai-model-split-for-app-doc-investigation.mdc` | **Workspace/Project Rule** (`.cursor/rules/` in the MAKE/APPS workspace) | Drop the `.mdc` file as-is into `<workspace>/.cursor/rules/` |
+| `rules/vscode-apps-sdk/dev-conventions.mdc` | **Workspace/Project Rule** (`.cursor/rules/` in the vscode-apps-sdk workspace) | Drop the `.mdc` file as-is into `<workspace>/.cursor/rules/` |
+| `skills/sdk-apps/*` | User-level skill (`~/.cursor/skills/<name>/`) | Copy folder as-is |
+| `commands/sdk-apps/*` | User-level command (`~/.cursor/commands/`) | Copy file as-is |
+
+User Rules have no backing file on disk (confirmed — they live in Cursor's
+internal settings, not `~/.cursor/user-rules/` or any plain file), so the
+`.mdc` copies here are the **only portable source of truth** for them. This is
+also why they're most important to keep in sync (see below) and to re-paste
+manually when setting up Cursor on a new machine (e.g. the planned Mac move).
+
 ## Current contents
 
 ### rules/sdk-apps
-- `backup-make-app-files.mdc` — back up Make app files before editing (no git history)
+- `backup-make-app-files.mdc` — back up Make app files before editing (no git history). Cross-platform: includes both Windows (PowerShell) and macOS (bash/zsh) paths and snippets.
 - `agent-investigation-and-make.mdc` — verify-before-claiming, Make MCP only, ask before changing apps
 - `apps-unit-testing-convention.mdc` — deterministic `it()`/`assert` unit test standard
 - `ai-model-split-for-app-doc-investigation.mdc` — orchestrator/subagent model split for app-vs-vendor-doc investigations
@@ -65,12 +87,34 @@ app family) are **not** kept here — they live alongside that project instead.
 ## How to use in Cursor
 
 Copy the relevant files into your local Cursor config, preserving the relative
-path under the domain folder, e.g.:
+path under the domain folder — see the [location table](#where-each-file-actually-lives-in-cursor)
+above for exactly where each one goes (User Rule vs Project Rule vs skill vs command).
 
-- `rules/sdk-apps/*.mdc` → `~/.cursor/rules/`
-- `skills/sdk-apps/<name>/SKILL.md` → `~/.cursor/skills/<name>/SKILL.md`
-- `commands/sdk-apps/*.md` → `~/.cursor/commands/`
+## Keeping this in sync
 
-(User Rules set via Cursor Settings, rather than rule files, aren't distributed
-as files by Cursor — the `.mdc` copies of those here are the portable source of
-truth to re-apply them elsewhere.)
+These are manual copies, not symlinks — editing the live version (a User Rule
+in Cursor Settings, or a skill/command file under `~/.cursor/`) does **not**
+update this repo automatically, and vice versa. Whenever you change one side:
+
+1. Update the live version (Cursor Settings, or the local `~/.cursor/...` file) as usual.
+2. Copy the updated content into the matching file here.
+3. Commit and push.
+
+If it's been a while, diff the live content against the repo copy before
+trusting either one — don't assume they still match.
+
+## Adding new content
+
+Follow the existing `<type>/<domain>/<file>` pattern:
+
+- New domain → add a subfolder under each of `rules/`, `skills/`, `commands/`
+  that applies (not all three are required — e.g. a domain might only need a skill).
+- **Rules** (`rules/<domain>/<name>.mdc`) — frontmatter should include
+  `description` and either `alwaysApply: true` (Project Rule / most User Rules)
+  or `globs: [...]` for pattern-triggered Project Rules.
+- **Skills** (`skills/<domain>/<name>/SKILL.md`) — frontmatter needs `name` and
+  a `description` that states when to use it (skills are matched by description,
+  not always active).
+- **Commands** (`commands/<domain>/<name>.md`) — frontmatter needs `name`,
+  `type: command`, and `description`.
+- Update the "Current contents" section and the location table above when you add something.
