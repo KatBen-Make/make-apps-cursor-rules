@@ -33,9 +33,10 @@ commands/
 
 - **sdk-apps** — working on Make custom (SDK) apps via the Make MCP server:
   investigation discipline, backup-before-edit, unit test conventions, model
-  routing for API-doc investigations, Jira Developer Notes formatting, the
-  local SDK docs knowledge-base lookup skill, pre-commit change review, and
-  the Limit-parameter checker command.
+  routing for API-doc investigations, Jira Developer Notes formatting,
+  pre-commit change review, and the Limit-parameter checker command.
+  (The local SDK docs knowledge-base skill lives in a colleague's separate
+  repo, not here.)
 - **vscode-apps-sdk** — contributing to the `integromat/vscode-apps-sdk` VS
   Code extension codebase itself (TypeScript) — distinct from building apps
   *with* that extension.
@@ -56,7 +57,6 @@ app family) are **not** kept here — they live alongside that project instead.
 
 ### skills/sdk-apps
 - `jira-developer-notes/` — structured Analysis/Changes/QA Developer Notes format for Jira
-- `make-sdk-apps-brain/` — routes SDK/UX doc questions to the local Obsidian vault instead of the web
 - `sdk-app-change-review/` — scoped pre-commit review of a Jira task's described changes
 
 ### commands/sdk-apps
