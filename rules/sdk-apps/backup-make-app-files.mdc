@@ -9,7 +9,11 @@ Make app files often have no git history (edited directly on the server via MCP,
 in a temp local clone). Before the FIRST modification of such a file in a session,
 save a copy to the backup folder so changes are recoverable.
 
-Backup root: `C:\Users\kacab\Documents\.cursor\backupFilesAI` (local-only, not synced).
+Backup root:
+- **Windows:** `C:\Users\kacab\Documents\.cursor\backupFilesAI`
+- **macOS:** `~/Documents/.cursor/backupFilesAI`
+
+(local-only, not synced). Use whichever path matches the current OS.
 
 ## When this applies
 
@@ -25,14 +29,25 @@ Do NOT copy `**/.secrets/**`, `*apikey*`, or any file referenced by `apikeyFile`
 
 1. **Local file edits:** before the first edit, copy the current on-disk file into the
    backup root, mirroring its path and adding a UTC timestamp before the extension:
-   - Source: `<workspace>\connections\myConn\base.iml.json`
-   - Backup: `C:\Users\kacab\Documents\.cursor\backupFilesAI\connections\myConn\base.20260625-193000.iml.json`
+   - Source (Windows): `<workspace>\connections\myConn\base.iml.json`
+   - Backup (Windows): `C:\Users\kacab\Documents\.cursor\backupFilesAI\connections\myConn\base.20260625-193000.iml.json`
+   - Source (macOS): `<workspace>/connections/myConn/base.iml.json`
+   - Backup (macOS): `~/Documents/.cursor/backupFilesAI/connections/myConn/base.20260625-193000.iml.json`
 
+   **Windows (PowerShell):**
    ```powershell
    $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
    $dest = "C:\Users\kacab\Documents\.cursor\backupFilesAI\<relative\path>\<name>.$ts.<ext>"
    New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
    Copy-Item "<sourceFile>" $dest
+   ```
+
+   **macOS (bash/zsh):**
+   ```bash
+   ts=$(date -u +%Y%m%d-%H%M%S)
+   dest="$HOME/Documents/.cursor/backupFilesAI/<relative/path>/<name>.$ts.<ext>"
+   mkdir -p "$(dirname "$dest")"
+   cp "<sourceFile>" "$dest"
    ```
 
 2. **Make SERVER edits (via MCP):** there is no local file yet. First FETCH the current
@@ -45,3 +60,5 @@ Do NOT copy `**/.secrets/**`, `*apikey*`, or any file referenced by `apikeyFile`
 - Back up the ORIGINAL content (before your change), once per file per session.
 - Preserve original formatting in the backup — never minify.
 - Mention briefly that a backup was made and where.
+- Detect the current OS and use the matching path/script — don't mix Windows and macOS
+  conventions in the same backup run.
