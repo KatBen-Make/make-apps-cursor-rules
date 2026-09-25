@@ -1,0 +1,17 @@
+---
+description: Read the eMonkey project brain before work in the eMonkey APPS workspace.
+alwaysApply: true
+---
+
+# eMonkey project brain
+
+This workspace is eMonkey internal Make apps: `C:\Users\kacab\Documents\eMonkey\APPS`.
+
+Before investigating or editing, read:
+
+1. `C:\Users\kacab\Documents\eMonkey\APPS\agent-brain\index.md`
+2. The skill that index lists for this app.
+
+IEN public-app polish and vscode-apps-sdk extension conventions are out of scope here.
+
+When a correction should survive the next session, add one decision file under `agent-brain\decisions\`. Do not copy this brain into `make-apps-cursor-rules` (that repo is public).

@@ -1,0 +1,19 @@
+---
+description: Read the vscode-apps-sdk project brain before work in the extension repo.
+alwaysApply: true
+---
+
+# vscode-apps-sdk project brain
+
+This workspace is the Make Apps Editor VS Code extension, not a Make custom-app module tree.
+
+Before investigating or editing, read:
+
+1. `AGENTS.md` in this repo (`CLAUDE.md` includes it).
+2. `C:\Users\kacab\Documents\MAKE\Tools\make-apps-cursor-rules\brains\vscode-apps-sdk\index.md`
+
+IEN app rules and eMonkey client conventions are out of scope here.
+
+Personal decisions that should not be committed upstream go in `make-apps-cursor-rules\brains\vscode-apps-sdk\decisions\`, not in `AGENTS.md`.
+
+If the rules-repo path above is missing, use the path in `brains\machines.md` after cloning `make-apps-cursor-rules`.

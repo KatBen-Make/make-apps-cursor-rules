@@ -44,6 +44,24 @@ commands/
 Client- or app-specific skills (e.g. anything scoped to a single customer's
 app family) are **not** kept here — they live alongside that project instead.
 
+## Brains
+
+Project memory (approach and decisions) is separate from rules and skills.
+Start at [`brains/index.md`](brains/index.md). Paths per computer are in
+[`brains/machines.md`](brains/machines.md).
+
+| Brain | Canonical file | Installed on this PC |
+|---|---|---|
+| IEN / `MAKE/APPS` | `brains/make-ien/index.md` | `.cursor/rules/project-brain.mdc` and `CLAUDE.md` in that workspace |
+| vscode-apps-sdk | `brains/vscode-apps-sdk/index.md` plus the extension repo's `AGENTS.md` | `.cursor/rules/project-brain.mdc` in the extension repo (local only; `AGENTS.md` stays the tracked architecture doc) |
+| eMonkey | **Not in this repo.** `eMonkey/APPS/agent-brain/index.md` | `.cursor/rules/project-brain.mdc` and `CLAUDE.md` in that workspace |
+
+Entry-rule copies to drop into each workspace live in `brains/cursor-entry/`.
+Claude Code's global router is `brains/user-CLAUDE.md` (copy to `~/.claude/CLAUDE.md`).
+
+After a correction that should survive the next session, add one file under
+that project's `decisions/` folder. A habit for every workspace goes in `rules/`.
+
 ## Where each file actually lives in Cursor
 
 Files in this repo are **portable copies**. Where the original actually lives
@@ -57,6 +75,10 @@ can drop into a folder:
 | `rules/sdk-apps/apps-unit-testing-convention.mdc` | **User Rule** | Paste body into Settings → Rules → add rule |
 | `rules/sdk-apps/ai-model-split-for-app-doc-investigation.mdc` | **Workspace/Project Rule** (`.cursor/rules/` in the MAKE/APPS workspace) | Drop the `.mdc` file as-is into `<workspace>/.cursor/rules/` |
 | `rules/vscode-apps-sdk/dev-conventions.mdc` | **Workspace/Project Rule** (`.cursor/rules/` in the vscode-apps-sdk workspace) | Drop the `.mdc` file as-is into `<workspace>/.cursor/rules/` |
+| `brains/cursor-entry/make-apps-project-brain.mdc` | **Project rule** in `MAKE/APPS` | Copy to `<MAKE/APPS>/.cursor/rules/project-brain.mdc` |
+| `brains/cursor-entry/vscode-apps-sdk-project-brain.mdc` | **Project rule** in the extension repo | Copy to `<vscode-apps-sdk>/.cursor/rules/project-brain.mdc` |
+| `brains/cursor-entry/emonkey-project-brain.mdc` | **Project rule** in `eMonkey/APPS` | Copy to `<eMonkey/APPS>/.cursor/rules/project-brain.mdc` |
+| `brains/user-CLAUDE.md` | Claude Code global instructions | Copy to `~/.claude/CLAUDE.md` |
 | `skills/sdk-apps/*` | User-level skill (`~/.cursor/skills/<name>/`) | Copy folder as-is |
 | `commands/sdk-apps/*` | User-level command (`~/.cursor/commands/`) | Copy file as-is |
 
@@ -83,6 +105,15 @@ manually when setting up Cursor on a new machine (e.g. the planned Mac move).
 
 ### commands/sdk-apps
 - `check-parameter-limit.md` — audits Search/List/Watch modules for a correct `limit` parameter
+
+### brains
+- `index.md` — which workspace reads which brain
+- `machines.md` — paths on this PC and a blank column for the other computer
+- `make-ien/` — IEN project memory and `decisions/`
+- `vscode-apps-sdk/` — extension project memory and `decisions/`
+- `emonkey/README.md` — pointer only; client notes stay in the eMonkey workspace
+- `cursor-entry/` — project rules already installed on this PC
+- `user-CLAUDE.md` — Claude Code router, already copied to `~/.claude/CLAUDE.md` on this PC
 
 ## How to use in Cursor
 

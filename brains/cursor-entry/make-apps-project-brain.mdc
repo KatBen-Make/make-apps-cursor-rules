@@ -1,0 +1,21 @@
+---
+description: Read the IEN project brain before work in the MAKE/APPS workspace.
+alwaysApply: true
+---
+
+# IEN project brain
+
+This workspace is IEN / official Make custom apps: `C:\Users\kacab\Documents\MAKE\APPS`.
+
+Before investigating or editing, read:
+
+1. `C:\Users\kacab\Documents\MAKE\Tools\make-apps-cursor-rules\brains\make-ien\index.md`
+2. The notes that index lists for this task.
+
+Platform docs are the SDK APPS brain vault in this workspace (`SDK APPS brain\Make Custom Apps Obsidian`), via the `make-sdk-apps-brain` skill. Start at `AI Agent Quick Index.md`.
+
+eMonkey client conventions and vscode-apps-sdk extension conventions are out of scope here.
+
+When a correction should survive the next session, add one decision file under `make-apps-cursor-rules\brains\make-ien\decisions\`.
+
+If the rules-repo path above is missing, use the path in `brains\machines.md` after cloning `make-apps-cursor-rules`.
